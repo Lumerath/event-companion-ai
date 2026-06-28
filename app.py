@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+from services.ai_service import generate_event_plan
 
 app = Flask(__name__)
 
@@ -8,11 +9,7 @@ def home():
 
     if request.method == "POST":
         event_name = request.form["event"]
-        message =  f"""
-        Evento registrado: {event_name}
-
-        Seu assistente de eventos está sendo preparado.
-        """
+        message = generate_event_plan(event_name)
 
     return render_template("index.html", message=message)
 
