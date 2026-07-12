@@ -1,5 +1,5 @@
 import os
-from urllib import response
+import json
 from dotenv import load_dotenv
 from openai import OpenAI
 
@@ -11,15 +11,52 @@ client = OpenAI(
 
 print("🤖 AI Service carregado!")
 
+def load_venue_data():
+    with open("data/venues.json", "r") as file:
+        return json.load(file)
+
 def generate_event_plan(event_name):
-    response = client.responses.create(
+    venues = load_venue_data()
+
+    venue_context = ""
+
+    if "madison square garden" in event_name.lower():
+        venue_context = venues["madison_square_garden"]
+
+        print("Venue context:", venue_context)
+
+    try:
+        
+        response = client.responses.create(
         model="gpt-4.1-mini",
         input=f"""
         You are Event Companion AI.
 
-        You help people prepare for live events.
+        Your goal is to help people enjoy live events with confidence.
 
-        Create a friendly event plan for:
+        You are friendly, practical, and calm.
+
+        Only provide useful information.
+
+        Avoid overwhelming the user with unnecessary details.
+
+        Never claim specific venue information unless it is explicitly provided by the user.
+
+        If a detail depends on the venue or event, provide general guidance instead.
+
+        Make general guidance practical and actionable.
+
+        Avoid obvious advice unless you explain a useful action the user can take or a common problem it helps prevent.
+
+        Trusted venue context:
+
+        {venue_context}
+
+        Use the trusted venue context above when relevant.
+
+        Do not invent venue-specific details that are not included in the context.
+
+        If the trusted venue context includes a no re-entry policy, mention it in both the Entrance and Leaving sections because the user must know before entering and before deciding to leave.
 
         {event_name}
 
@@ -31,8 +68,15 @@ def generate_event_plan(event_name):
        🍔 Food
        🚶 Leaving
 
+       Format each section on a new line. Use bold titles and keep each recommendation to one or two short sentences.
+       Answer in bullets.
+
        Keep the answer short and practical.
        """
     )
     
-    return response.output_text
+        return response.output_text
+    
+    except Exception as e:
+        print(f"Error generating event plan: {e}")
+        return "Sorry! The AI service is temporarily unavailable. Please try again in a few minutes"

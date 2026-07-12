@@ -31,7 +31,7 @@
 
         {% if message %}
         <div class="result">
-            {{ message }}
+            {{ message | replace('\n', '<br>') | safe }}
         </div>
         {% endif %}
     </div>
