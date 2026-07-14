@@ -15,3 +15,5 @@ Integrate a reliable venue data source instead of relying only on the LLM.
 ### Risk
 Avoid hallucinations by not guessing merchandise locations.
 
+Review unsupported general advice in Food section.
+

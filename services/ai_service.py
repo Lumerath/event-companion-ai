@@ -14,9 +14,14 @@ print("🤖 AI Service carregado!")
 def load_venue_data():
     with open("data/venues.json", "r") as file:
         return json.load(file)
+    
+def load_event_data():
+    with open("data/events.json", "r") as file:
+        return json.load(file)
 
 def generate_event_plan(event_name):
     venues = load_venue_data()
+    events = load_event_data()
 
     venue_context = ""
 
@@ -24,6 +29,13 @@ def generate_event_plan(event_name):
         venue_context = venues["madison_square_garden"]
 
         print("Venue context:", venue_context)
+
+    event_context = ""
+
+    if "bon jovi" in event_name.lower():
+        event_context = events["bon_jovi_msg_july_16_2026"]
+
+        print("Event context:", event_context)
 
     try:
         
@@ -57,6 +69,17 @@ def generate_event_plan(event_name):
         Do not invent venue-specific details that are not included in the context.
 
         If the trusted venue context includes a no re-entry policy, mention it in both the Entrance and Leaving sections because the user must know before entering and before deciding to leave.
+
+        Trusted event context:
+
+        {event_context}
+
+        Use the trusted event context above when relevant.
+        Do not invent event-specific details that are not included in the context.
+        For merchandise, only provide event-specific advice if merchandise information exists in the trusted event context.
+
+        If no trusted merchandise information is available, say:
+        "Specific merchandise information is not confirmed yet. Check official event or VIP instructions before the event."
 
         {event_name}
 
