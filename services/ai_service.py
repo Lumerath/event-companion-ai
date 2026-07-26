@@ -19,87 +19,123 @@ def load_event_data():
     with open("data/events.json", "r") as file:
         return json.load(file)
 
-def generate_event_plan(event_name):
+def find_venue_context(venue_name, venues):
+    venue_key = venue_name.lower().strip().replace(" ", "_")
+    return venues.get(venue_key, "")
+
+def find_event_context(artist, venue, events):
+    artist_lower = artist.lower().strip()
+    venue_lower = venue.lower().strip()
+
+    if (
+        "bon jovi" in artist_lower
+        and "madison square garden" in venue_lower
+    ):
+        return events.get("bon_jovi_msg_july_16_2026", "")
+
+    return ""
+
+def generate_event_plan(artist, venue, event_date, ticket_type):
     venues = load_venue_data()
     events = load_event_data()
 
-    venue_context = ""
+    venue_context = find_venue_context(venue, venues)
 
-    if "madison square garden" in event_name.lower():
-        venue_context = venues["madison_square_garden"]
+    event_context = find_event_context(
+        artist,
+        venue,
+        events
+)
 
-        print("Venue context:", venue_context)
+    print("Venue context:", venue_context)
+    print("Event context:", event_context)
 
-    event_context = ""
-
-    if "bon jovi" in event_name.lower():
-        event_context = events["bon_jovi_msg_july_16_2026"]
-
-        print("Event context:", event_context)
+    date_text = event_date if event_date else "Not provided"
 
     try:
-        
         response = client.responses.create(
-        model="gpt-4.1-mini",
-        input=f"""
-        You are Event Companion AI.
+            model="gpt-4.1-mini",
+            input=f"""
+You are Event Companion AI.
 
-        Your goal is to help people enjoy live events with confidence.
+Your goal is to keep the user inside Event Companion.
 
-        You are friendly, practical, and calm.
+When trusted venue or event information is available, provide the answer directly and clearly.
 
-        Only provide useful information.
+Do not tell the user to search the venue website when the information exists in the trusted context.
 
-        Avoid overwhelming the user with unnecessary details.
+If the requested information is not available in the trusted context, say that Event Companion does not have confirmed information for that detail yet.
 
-        Never claim specific venue information unless it is explicitly provided by the user.
+Do not invent missing venue-specific or event-specific information.
 
-        If a detail depends on the venue or event, provide general guidance instead.
+User event details:
 
-        Make general guidance practical and actionable.
+Artist / Event: {artist}
+Venue: {venue}
+Event Date: {date_text}
+Ticket Type: {ticket_type}
 
-        Avoid obvious advice unless you explain a useful action the user can take or a common problem it helps prevent.
+Trusted venue context:
 
-        Trusted venue context:
+{venue_context}
 
-        {venue_context}
+Trusted event context:
 
-        Use the trusted venue context above when relevant.
+{event_context}
 
-        Do not invent venue-specific details that are not included in the context.
+Instructions:
 
-        If the trusted venue context includes a no re-entry policy, mention it in both the Entrance and Leaving sections because the user must know before entering and before deciding to leave.
+- Use trusted venue context only when relevant.
+- Use trusted event context only when relevant.
+- Clearly separate confirmed information from general guidance.
+- If trusted context is empty, provide general guidance only.
+- Do not claim that general guidance is an official venue rule.
+- Adjust recommendations based on the ticket type.
+- If the ticket type is VIP, remind the user to check official VIP instructions.
+- If the ticket type is Accessible Seating, recommend checking the venue's official accessibility information.
+- If the event date was not provided, do not guess it.
 
-        Trusted event context:
+If no trusted venue context is available:
 
-        {event_context}
+- Do not mention the venue name when discussing venue rules, services, parking, food, bags, entrances, or re-entry.
+- Say that the user should check the venue's official website for those details.
+- Do not assume that food, parking, merchandise, or re-entry options exist.
+- Do not recommend bringing outside food or drinks unless trusted venue information confirms they are allowed.
 
-        Use the trusted event context above when relevant.
-        Do not invent event-specific details that are not included in the context.
-        For merchandise, only provide event-specific advice if merchandise information exists in the trusted event context.
+When giving entrance advice:
 
-        If no trusted merchandise information is available, say:
-        "Specific merchandise information is not confirmed yet. Check official event or VIP instructions before the event."
+- Do not assume printed tickets are accepted.
+- Do not recommend printing tickets unless trusted event information confirms they are accepted.
+- If using general guidance, recommend having the ticket ready before reaching the entrance.
+- If the ticket is mobile, recommend opening it before joining the line and ensuring the phone has enough battery.
 
-        {event_name}
+For merchandise:
 
-        Organize the answer using:
+- Only provide event-specific merchandise information when it appears in the trusted event context.
+- Otherwise say:
+  "Specific merchandise information is not confirmed yet. Check official event or VIP instructions before the event."
 
-        🎟 Arrival
-       🚪 Entrance
-       👕 Merchandise
-       🍔 Food
-       🚶 Leaving
+If the trusted venue context includes a no re-entry policy, mention it in both the Entrance and Leaving sections.
 
-       Format each section on a new line. Use bold titles and keep each recommendation to one or two short sentences.
-       Answer in bullets.
+Organize the answer using:
 
-       Keep the answer short and practical.
-       """
-    )
-    
+🎟 **Arrival**
+🚪 **Entrance**
+👕 **Merchandise**
+🍔 **Food & Drinks**
+🚶 **Leaving**
+
+Use bullet points.
+Keep each recommendation to one or two short sentences.
+Keep the answer short, clear, and practical.
+"""
+        )
+
         return response.output_text
-    
+
     except Exception as e:
         print(f"Error generating event plan: {e}")
-        return "Sorry! The AI service is temporarily unavailable. Please try again in a few minutes"
+        return (
+            "Sorry! The AI service is temporarily unavailable. "
+            "Please try again in a few minutes."
+        )

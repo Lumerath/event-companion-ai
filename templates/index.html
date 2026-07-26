@@ -1,40 +1,151 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Companion AI</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Event Companion</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
 </head>
+
 <body>
 
-    <div class="container">
-        <h1>🎵 Event Companion AI</h1>
+    <main class="container">
+
+        <h1>CrowdPilot</h1>
 
         <p class="subtitle">
-            Seu assistente inteligente para eventos.
+            Navigate every event with confidence.
         </p>
 
-        <form method="POST">
+<div class="nova-intro">
+
+    <h2>👋 Hi, I'm Nova!</h2>
+
+    <p>
+        I'll help you plan your event, avoid common mistakes,
+        and enjoy your day with less stress.
+    </p>
+
+ </div>
+    
+        <form method="POST" action="/">
+
+            <label for="artist">
+                Artist / Event *
+            </label>
+
             <input
                 type="text"
-                name="event"
-                placeholder="Ex: Olivia Rodrigo no Madison Square Garden"
+                id="artist"
+                name="artist"
+                placeholder="e.g. Bon Jovi"
+                value="{{ request.form.get('artist', '') }}"
                 required
             >
 
+            <label for="venue">
+                Venue *
+            </label>
+
+            <input
+                type="text"
+                id="venue"
+                name="venue"
+                placeholder="e.g. Madison Square Garden"
+                value="{{ request.form.get('venue', '') }}"
+                required
+            >
+
+            <label for="event_date">
+                Event Date (Optional)
+            </label>
+
+            <input
+                type="date"
+                id="event_date"
+                name="event_date"
+                value="{{ request.form.get('event_date', '') }}"
+            >
+
+            <label for="ticket_type">
+                Ticket Type
+            </label>
+
+            <select
+                id="ticket_type"
+                name="ticket_type"
+            >
+                <option
+                    value="General Admission"
+                    {% if request.form.get('ticket_type') == 'General Admission' %}
+                        selected
+                    {% endif %}
+                >
+                    General Admission
+                </option>
+
+                <option
+                    value="Reserved Seating"
+                    {% if request.form.get('ticket_type') == 'Reserved Seating' %}
+                        selected
+                    {% endif %}
+                >
+                    Reserved Seating
+                </option>
+
+                <option
+                    value="VIP"
+                    {% if request.form.get('ticket_type') == 'VIP' %}
+                        selected
+                    {% endif %}
+                >
+                    VIP
+                </option>
+
+                <option
+                    value="Accessible Seating"
+                    {% if request.form.get('ticket_type') == 'Accessible Seating' %}
+                        selected
+                    {% endif %}
+                >
+                    Accessible Seating
+                </option>
+
+                <option
+                    value="Not Sure"
+                    {% if request.form.get('ticket_type') == 'Not Sure' %}
+                        selected
+                    {% endif %}
+                >
+                    Not Sure
+                </option>
+            </select>
+
             <button type="submit">
-                Criar Plano
+                Plan with Nova
             </button>
+
         </form>
 
         {% if message %}
-        <div class="result">
-            {{ message | replace('\n', '<br>') | safe }}
-        </div>
+            <section class="result">
+
+                <h2>Nova's Plan</h2>
+
+            <p>Here's what I recommend for your event.</p>
+
+                <div class="result-content">
+                    {{ message|safe }}
+                </div>
+            </section>
         {% endif %}
-    </div>
+
+    </main>
 
 </body>
 </html>
