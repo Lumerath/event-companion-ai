@@ -11,5 +11,23 @@
         "artist": "Aespa",
         "venue": "UBS Arena",
         "date": ""
+    },
+
+    "jackson_wang_barclays_center_2026": {
+        "artist": "Jackson Wang",
+        "venue": "Barclays Center",
+        "date": ""
+    },
+
+    "big_bang_metlife_stadium_2026": {
+        "artist": "Big Bang",
+        "venue": "MetLife Stadium",
+        "date": ""
+    },
+
+    "xdnary_heroes_brooklyn_paramount_2025": {
+        "artist": "XDNARY Heroes",
+        "venue": "Brooklyn Paramount",
+        "date": ""
     }
 }

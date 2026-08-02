@@ -61,5 +61,71 @@
         "reentry_policy": "",
  
         "leaving": ""
+},
+
+    "barclays_center": {
+        "name": "Barclays Center",
+
+        "getting_there": "",
+
+        "arrival": "",
+
+        "entrance": "",
+
+        "bag_policy": "",
+
+        "food_options": "",
+
+        "merchandise_information": "",
+
+        "accessibility": "",
+
+        "reentry_policy": "",
+
+        "leaving": ""
+},
+
+    "metlife_stadium": {
+        "name": "MetLife Stadium",
+
+        "getting_there": "",
+
+        "arrival": "",
+
+        "entrance": "",
+
+        "bag_policy": "",
+
+        "food_options": "",
+
+        "merchandise_information": "",
+
+        "accessibility": "",
+
+        "reentry_policy": "",
+
+        "leaving": ""
+},
+
+    "brooklyn_paramount": {
+        "name": "Brooklyn Paramount",
+
+        "getting_there": "",
+
+        "arrival": "",
+
+        "entrance": "",
+
+        "bag_policy": "",
+
+        "food_options": "",
+
+        "merchandise_information": "",
+
+        "accessibility": "",
+
+        "reentry_policy": "",
+
+        "leaving": ""
 }
 }
