@@ -5,5 +5,11 @@
         "date": "July 16, 2026",
         "doors": "6:30 PM",
         "show_time": "7:30 PM"
+    },
+
+    "aespa_ubs_arena_2026": {
+        "artist": "Aespa",
+        "venue": "UBS Arena",
+        "date": ""
     }
 }

@@ -33,7 +33,9 @@
 
  </div>
     
-        <form method="POST" action="/">
+        
+        <form id="event-form" method="POST" action="/">
+
 
             <label for="artist">
                 Artist / Event *
@@ -126,7 +128,7 @@
                 </option>
             </select>
 
-            <button type="submit">
+            <button id="submit-btn" type="submit">
                 Plan with Nova
             </button>
 
@@ -135,9 +137,9 @@
         {% if message %}
             <section class="result">
 
-                <h2>Nova's Plan</h2>
+               <h2>✨ Nova's Plan</h2>
 
-            <p>Here's what I recommend for your event.</p>
+        <p> Here's your personalized event guide.</p>
 
                 <div class="result-content">
                     {{ message|safe }}
@@ -147,5 +149,26 @@
 
     </main>
 
+<script>
+
+    const form = document.getElementById("event-form");
+    const submitBtn = document.getElementById("submit-btn");
+
+    form.addEventListener("submit", function (event) {
+
+    event.preventDefault();
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Nova is planning your day...";
+
+    setTimeout(() => {
+        form.submit();
+    }, 100);
+
+});
+
+</script>
+
 </body>
+
 </html>

@@ -1,7 +1,65 @@
 {
     "madison_square_garden": {
         "name": "Madison Square Garden",
-        "bag_policy": "Bags must fit comfortably under the seat. Oversized bags larger than 22 x 14 x 9 inches are prohibited.",
-        "reentry_policy": "All exits are final. Guests are not permitted to leave and then re-enter."
-    }
+
+        "getting_there": "",
+
+        "arrival": "",
+        "entrance": "",
+
+        "bag_policy": "",
+
+        "food_options": "",
+
+        "merchandise_information": "",
+
+        "accessibility": "",
+
+        "reentry_policy": "",
+
+        "leaving": ""
+    },
+
+    "ubs_arena": {
+        "name": "UBS Arena",
+        
+        "getting_there": "Parking is available for purchase in advance and pre-booking is recommended. Free shuttle buses operate between Emerald Parking and Elmont–UBS Arena Station.",
+
+        "arrival": "",
+        "entrance": "",
+
+        "bag_policy": "Bags no larger than 12 x 12 x 6 inches are permitted and may be screened. Backpacks of all sizes are prohibited. Medical bags and baby bags are allowed after screening. Bag check is available in the Great Hall.",
+
+        "food_options": "",
+
+        "merchandise_information": "",
+
+        "accessibility": "",
+
+        "reentry_policy": "Re-entry is not allowed at UBS Arena.",
+
+        "leaving": ""
+    },
+
+    "prudential_center": {
+        "name": "Prudential Center",
+
+        "getting_there": "",
+
+        "arrival": "",
+
+        "entrance": "",
+
+        "bag_policy": "",
+
+        "food_options": "",
+  
+        "merchandise_information": "",
+
+        "accessibility": "",
+
+        "reentry_policy": "",
+ 
+        "leaving": ""
+}
 }
