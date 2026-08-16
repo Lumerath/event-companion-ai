@@ -11,9 +11,6 @@ client = OpenAI(
     api_key=os.getenv("OPENAI_API_KEY")
 )
 
-print("🤖 AI Service carregado!")
-
-
 def load_venue_data():
     with open("data/venues.json", "r", encoding="utf-8") as file:
         return json.load(file)
@@ -25,28 +22,68 @@ def load_event_data():
 
 
 def find_venue_context(venue_name, venues):
-    venue_key = venue_name.lower().strip().replace(" ", "_")
+    venue_lower = venue_name.lower().strip()
 
-    return venues.get(venue_key, "")
+    for venue_data in venues.values():
+        if not isinstance(venue_data, dict):
+            continue
 
+        official_name = venue_data.get("name", "").lower().strip()
 
-def find_event_context(artist, venue, events):
-    artist_lower = artist.lower().strip()
-    venue_lower = venue.lower().strip()
+        aliases = venue_data.get("aliases",[])
 
-    if (
-        "bon jovi" in artist_lower
-        and "madison square garden" in venue_lower
-    ):
-        return events.get(
-            "bon_jovi_msg_july_16_2026",
-            ""
-        )
+        aliases_lower = [
+            alias.lower().strip()
+            for alias in aliases
+        ]
+
+        if (
+            venue_lower == official_name
+            or venue_lower in aliases_lower
+        ):
+            return venue_data
 
     return ""
 
+    
+def find_event_context(artist, venue, events, venues):
+    artist_lower = artist.lower().strip()
+    venue_lower = venue.lower().strip()
 
-def validate_event(artist, venue, event_date, events):
+    for event_data in events.values():
+        if not isinstance(event_data, dict):
+            continue
+
+        saved_artist = event_data.get("artist", "").lower().strip()
+        saved_venue = event_data.get("venue", "").lower().strip()
+        
+        venue_key = saved_venue.replace(" ", "_")
+        venue_data = venues.get(venue_key, {})
+
+        aliases = venue_data.get("aliases", [])
+
+        aliases_lower = [
+            alias.lower().strip()
+            for alias in aliases
+        ]
+
+        if (
+            saved_artist == artist_lower
+
+        and (
+
+             saved_venue == venue_lower
+
+        or venue_lower in aliases_lower
+         )
+
+    ):
+     
+         return event_data
+        
+    return ""    
+
+def validate_event(artist, venue, event_date, events, venues):
     artist_lower = artist.lower().strip()
     venue_lower = venue.lower().strip()
     event_date = event_date.strip()
@@ -65,9 +102,31 @@ def validate_event(artist, venue, event_date, events):
         artist_found = True
 
         expected_venue = event_data.get("venue", "").lower().strip()
+
+        expected_venue_key = (
+            event_data.get("venue", "")
+            .lower()
+            .strip()
+            .replace(" ", "_")
+        )
+
+        venue_key = expected_venue.replace(" ", "_")
+        venue_data = venues.get(venue_key, {})
+
+        aliases = venue_data.get("aliases", [])
+
+        aliases_lower = [
+            alias.lower().strip()
+            for alias in aliases
+        ]
+            
         expected_date = event_data.get("date", "").strip()
 
-        if expected_venue and expected_venue != venue_lower:
+        if (
+            expected_venue
+            and venue_lower != expected_venue
+            and venue_lower not in aliases_lower
+        ):       
             return {
                 "valid": False,
                 "reason": "venue",
@@ -115,7 +174,7 @@ def build_venue_context(venue_data):
     }
 
     for key, value in venue_data.items():
-        if key == "name":
+        if key in ("name", "aliases"):
             continue
 
         if value:
@@ -138,7 +197,8 @@ def generate_event_plan(
         artist,
         venue,
         event_date,
-        events
+        events,
+        venues
     )
 
     if not validation["valid"]:
@@ -156,7 +216,7 @@ Please review your event details and try again.
 """
         elif validation["reason"] == "unverified":
             return f"""
-### ### ⚠️ Event not verified
+### ⚠️ Event not verified
 
 I couldn't verify this event using the available event information.
 
@@ -197,11 +257,9 @@ Please review your event details and try again.
     event_context = find_event_context(
         artist,
         venue,
-        events
+        events,
+        venues
     )
-
-    print("Venue context:", venue_context)
-    print("Event context:", event_context)
 
     date_text = (
         event_date

@@ -60,3 +60,24 @@ Examples:
 
 Reason for backlog: This feature requires real-time infrastructure, moderation, and user management. It is intentionally postponed until after Version 1.0.
 
+Hoje, assim que encontra o artista, ela testa aquele evento e pode retornar mismatch imediatamente.
+
+Exemplo futuro:
+
+Bon Jovi → MSG
+Bon Jovi → Boston
+Bon Jovi → Philadelphia
+
+Se o usuário escolher Boston mas o primeiro Bon Jovi encontrado no JSON for MSG, o código pode acusar venue errado antes de chegar ao segundo registro.
+
+Para o banco atual provavelmente não quebra nada, porque cadastramos poucos eventos. Mas isso é uma dívida técnica real.
+
+Informações sobre freebies e principalmente na comunidade
+
+Colocar lightstick na nova do kpop ou fazer um proprio nosso
+
+Quando Nova comprimentar o fa chama-lo pelo nome: tipo stays, atinny etc.
+
+O que pode chamar atenção das companhias 
+
+

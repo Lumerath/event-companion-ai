@@ -1,6 +1,7 @@
 {
     "madison_square_garden": {
         "name": "Madison Square Garden",
+        "aliases": ["MSG", "The Garden"],
 
         "getting_there": "",
 
@@ -22,6 +23,7 @@
 
     "ubs_arena": {
         "name": "UBS Arena",
+        "aliases": ["UBS", "UBS Arena at Belmont Park", "Belmont Park"],
         
         "getting_there": "Parking is available for purchase in advance and pre-booking is recommended. Free shuttle buses operate between Emerald Parking and Elmont–UBS Arena Station.",
 
@@ -43,6 +45,7 @@
 
     "prudential_center": {
         "name": "Prudential Center",
+        "aliases": ["The Rock", "Prudential"],
 
         "getting_there": "",
 
@@ -61,10 +64,11 @@
         "reentry_policy": "",
  
         "leaving": ""
-},
+   },
 
     "barclays_center": {
         "name": "Barclays Center",
+        "aliases": ["Barclays", "Barclays Center Brooklyn"],
 
         "getting_there": "",
 
@@ -83,10 +87,11 @@
         "reentry_policy": "",
 
         "leaving": ""
-},
+   },
 
     "metlife_stadium": {
         "name": "MetLife Stadium",
+        "aliases": ["MetLife", "MetLife Stadium East Rutherford", "Met Life Stadium", "Met Life"],
 
         "getting_there": "",
 
@@ -105,10 +110,11 @@
         "reentry_policy": "",
 
         "leaving": ""
-},
+   },
 
     "brooklyn_paramount": {
         "name": "Brooklyn Paramount",
+        "aliases": ["Paramount", "Brooklyn Paramount Theater"],
 
         "getting_there": "",
 
@@ -127,5 +133,5 @@
         "reentry_policy": "",
 
         "leaving": ""
-}
+    }
 }

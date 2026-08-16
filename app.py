@@ -9,14 +9,16 @@ def home():
     message = ""
 
     if request.method == "POST":
-        print(request.form)
-        
-        artist = request.form.get("artist", "")
-        venue = request.form.get("venue", "")
-        event_date = request.form.get("event_date", "")
-        ticket_type = request.form.get("ticket_type", "Not Sure")
+                
+        artist = request.form.get("artist", "").strip()
+        venue = request.form.get("venue", "").strip()
+        event_date = request.form.get("event_date", "").strip()
+        ticket_type = request.form.get("ticket_type", "Not Sure").strip()
 
-        message = generate_event_plan(
+        if not artist or not venue:
+            message = "Please enter both an artist/event and venue."
+        else:
+            message = generate_event_plan(
             artist,
             venue,
             event_date,
